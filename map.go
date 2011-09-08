@@ -113,3 +113,11 @@ func (m Map) ArrayIndex(key interface{}) (*Array, bool) {
 	}
         return NewArray(index), true
 }
+
+func (m Map) MapIndex(key interface{}) (*Map, bool) {
+	index, present := m.raw[key]
+	if !present {
+		return nil, false
+	}
+        return NewMap(index), true
+}

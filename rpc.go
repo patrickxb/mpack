@@ -205,7 +205,6 @@ func (client *RPCClient) StartReader() {
 			continue
 		}
 		response := NewArray(generic)
-		log.Printf("response: %v", response)
 		if response.Item(0) != rpc_response {
 			log.Printf("didn't get rpc_response")
 			continue
