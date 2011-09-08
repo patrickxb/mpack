@@ -74,13 +74,13 @@ func sendResults(results chan []byte, quit chan bool, conn net.Conn) {
 	for {
 		select {
 		case result := <-results:
-                        n, err := conn.Write(result)
-                        if err != nil {
-                                log.Printf("error writing result: %s", err)
-                        }
-                        if n != len(result) {
-                                log.Printf("didn't fully write result.  wrote %d bytes, not %d bytes", n, len(result))
-                        }
+			n, err := conn.Write(result)
+			if err != nil {
+				log.Printf("error writing result: %s", err)
+			}
+			if n != len(result) {
+				log.Printf("didn't fully write result.  wrote %d bytes, not %d bytes", n, len(result))
+			}
 		case <-quit:
 			return
 		}
@@ -196,10 +196,10 @@ func (client *RPCClient) StartReader() {
 	for {
 		generic, _, err := Unpack(client.conn)
 		if err != nil {
-                        if err == os.EOF {
-                                client.Connected = false
-                                return
-                        }
+			if err == os.EOF {
+				client.Connected = false
+				return
+			}
 
 			log.Printf("%s: unpack error: %s", client.Host, err)
 			continue

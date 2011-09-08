@@ -21,7 +21,6 @@ func NewEmptyArray() *Array {
 	return result
 }
 
-
 func (a Array) Len() int {
 	return len(a.raw)
 }
@@ -59,11 +58,11 @@ func (a Array) UintItem(index int) uint64 {
 func (a Array) Uint32Item(index int) uint32 {
 	v := reflect.ValueOf(a.raw[index])
 	if isUint(v) {
-                return uint32(v.Uint())
-        }
+		return uint32(v.Uint())
+	}
 	if isInt(v) {
-                return uint32(v.Int())
-        }
+		return uint32(v.Int())
+	}
 	return 0
 }
 
@@ -76,11 +75,11 @@ func (a Array) BufferItem(index int) *bytes.Buffer {
 }
 
 func (a Array) ArrayItem(index int) *Array {
-        return NewArray(a.raw[index])
+	return NewArray(a.raw[index])
 }
 
 func (a Array) MapItem(index int) *Map {
-        return NewMap(a.raw[index])
+	return NewMap(a.raw[index])
 }
 
 func (a Array) FloatItem(index int) float64 {

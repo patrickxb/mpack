@@ -99,11 +99,11 @@ func (m Map) StringIndex(key interface{}) (string, bool) {
 	if !present {
 		return "", false
 	}
-        /*
-	v := reflect.ValueOf(index)
-	return v.String(), true
-        */
-        return string(index.([]uint8)), true
+	/*
+		v := reflect.ValueOf(index)
+		return v.String(), true
+	*/
+	return string(index.([]uint8)), true
 }
 
 func (m Map) ArrayIndex(key interface{}) (*Array, bool) {
@@ -111,7 +111,7 @@ func (m Map) ArrayIndex(key interface{}) (*Array, bool) {
 	if !present {
 		return nil, false
 	}
-        return NewArray(index), true
+	return NewArray(index), true
 }
 
 func (m Map) MapIndex(key interface{}) (*Map, bool) {
@@ -119,5 +119,5 @@ func (m Map) MapIndex(key interface{}) (*Map, bool) {
 	if !present {
 		return nil, false
 	}
-        return NewMap(index), true
+	return NewMap(index), true
 }

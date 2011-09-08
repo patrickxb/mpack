@@ -3,18 +3,18 @@ package mpack
 import (
 	"os"
 	"io"
-//	"time"
-//	"fmt"
+	//	"time"
+	//	"fmt"
 )
 
 func Pack(w io.Writer, value interface{}) (packedBytes int, err os.Error) {
-//	stime := time.Nanoseconds()
+	//	stime := time.Nanoseconds()
 	pw := NewPackWriter(w)
 	n, e := pw.pack(value)
 
-//	etime := time.Nanoseconds()
-//	msecs := (float64)(etime-stime) / 1000000
-//	fmt.Printf("pack time: %.3fms\n", msecs)
+	//	etime := time.Nanoseconds()
+	//	msecs := (float64)(etime-stime) / 1000000
+	//	fmt.Printf("pack time: %.3fms\n", msecs)
 
 	return n, e
 }
