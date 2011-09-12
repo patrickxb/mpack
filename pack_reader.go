@@ -1,11 +1,12 @@
 package mpack
 
 import (
-        "io"
-        "os"
         "encoding/binary"
-        "reflect"
         "fmt"
+        "io"
+        "log"
+        "os"
+        "reflect"
 )
 
 /*
@@ -30,6 +31,7 @@ func (pr PackReader) ReadByte() (byte, os.Error) {
         data := [1]byte{}
         n, err := pr.reader.Read(data[0:])
         if err != nil {
+                log.Printf("packreader ReadByte got error (%d bytes): %s", n, err)
                 return 0, err
         }
         if n != 1 {
@@ -43,6 +45,10 @@ func (pr PackReader) ReadBinary(result interface{}) os.Error {
 }
 
 func (pr PackReader) unpackRaw(length uint32, prefixBytes int) (interface{}, int, os.Error) {
+        if length == 0 {
+                log.Printf("weird...asking to unpackRaw of 0 length...returning nil?")
+                return nil, 0, nil
+        }
         numRead := prefixBytes
         data := make([]byte, length)
         n, err := pr.reader.Read(data)

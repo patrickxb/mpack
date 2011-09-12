@@ -1,13 +1,13 @@
 package mpack
 
 import (
-        "os"
-        "net"
-        "log"
-        "time"
         "bytes"
         "container/vector"
+        "log"
+        "net"
+        "os"
         "sync"
+        "time"
 )
 
 type GenericMap map[string]interface{}
@@ -197,6 +197,8 @@ func (client *RPCClient) StartReader() {
                 generic, _, err := Unpack(client.conn)
                 if err != nil {
                         if err == os.EOF {
+                                log.Printf("%s: eof", client.Host)
+                                log.Printf("any data? %v", generic)
                                 client.Connected = false
                                 return
                         }
