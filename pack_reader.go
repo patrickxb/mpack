@@ -46,7 +46,7 @@ func (pr PackReader) ReadBinary(result interface{}) os.Error {
 
 func (pr PackReader) unpackRaw(length uint32, prefixBytes int) (interface{}, int, os.Error) {
         if length == 0 {
-                log.Printf("weird...asking to unpackRaw of 0 length...returning nil?")
+                // lenght == 0 => nil...
                 return nil, 0, nil
         }
         numRead := prefixBytes
