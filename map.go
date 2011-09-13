@@ -1,6 +1,7 @@
 package mpack
 
 import (
+        "log"
         "reflect"
 )
 
@@ -120,4 +121,10 @@ func (m Map) MapIndex(key interface{}) (*Map, bool) {
                 return nil, false
         }
         return NewMap(index), true
+}
+
+func (m Map) DumpKeys() {
+        for k := range m.raw {
+                log.Printf(k.(string))
+        }
 }
