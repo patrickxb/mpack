@@ -25,6 +25,10 @@ func (p Params) IntIndex(key interface{}) (int64, bool) {
         return p.raw.IntIndex(key)
 }
 
+func (p Params) Int32Index(key interface{}) (int32, bool) {
+        return p.raw.Int32Index(key)
+}
+
 func (p Params) UintIndex(key interface{}) (uint64, bool) {
         return p.raw.UintIndex(key)
 }
