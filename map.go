@@ -116,11 +116,13 @@ func (m Map) StringIndex(key interface{}) (string, bool) {
         if !present {
                 return "", false
         }
-        /*
-        	v := reflect.ValueOf(index)
-        	return v.String(), true
-        */
-        // XXX need to check if nil
+        v := reflect.ValueOf(index)
+        if v.IsValid() == false {
+                return "", true
+        }
+        if v.IsNil() {
+                return "", true
+        }
         return string(index.([]uint8)), true
 }
 
