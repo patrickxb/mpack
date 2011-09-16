@@ -120,6 +120,7 @@ func (m Map) StringIndex(key interface{}) (string, bool) {
         	v := reflect.ValueOf(index)
         	return v.String(), true
         */
+        // XXX need to check if nil
         return string(index.([]uint8)), true
 }
 
