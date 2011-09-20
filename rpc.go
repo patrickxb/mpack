@@ -295,9 +295,13 @@ func (cp *ClientPool) Get() (*RPCClient, os.Error) {
         cp.lock.Lock()
         defer cp.lock.Unlock()
 
-        if cp.clients.Len() > 0 {
+        for cp.clients.Len() > 0 {
                 result := cp.clients.Pop().(*RPCClient)
-                return result, nil
+                if result.Connected {
+                        return result, nil
+                }
+                log.Printf("discarding disconnected client")
+                // XXX could check for stale connections like Pool does...
         }
 
         result, err := NewRPCClient(cp.Host)
@@ -312,14 +316,18 @@ func (cp *ClientPool) Put(client *RPCClient) {
         defer cp.lock.Unlock()
 
         if client.Connected == false {
+                log.Printf("returning a disconnected client...closing...")
                 client.Close()
+                log.Printf("close finished")
                 return
         }
 
         if cp.clients.Len() >= cp.MaxSize {
+                log.Printf("pool is full, discarding client")
                 client.Close()
                 return
         }
 
+        log.Printf("putting client back in pool")
         cp.clients.Push(client)
 }
