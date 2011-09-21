@@ -132,7 +132,7 @@ func processRPC(rpc interface{}, results chan []byte) {
         }
         results <- response
 
-        log.Printf("rpc execute time: %.3f", (float64)(time.Nanoseconds()-startTime)/1000000)
+        log.Printf("rpc execute time: %.3f ms", (float64)(time.Nanoseconds()-startTime)/1e6)
 }
 
 func errorResponse(msgid uint32, message string) ([]byte, os.Error) {
