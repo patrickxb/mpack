@@ -46,6 +46,22 @@ func (m Map) IntIndex(key interface{}) (int64, bool) {
         return 0, false
 }
 
+func (m Map) IntPlainIndex(key interface{}) (int, bool) {
+        index, present := m.raw[key]
+        if !present {
+                return 0, false
+        }
+        v := reflect.ValueOf(index)
+        if isInt(v) {
+                return int(v.Int()), true
+        }
+        if isUint(v) {
+                return int(v.Uint()), true
+        }
+
+        return 0, false
+}
+
 func (m Map) Int32Index(key interface{}) (int32, bool) {
         index, present := m.raw[key]
         if !present {
