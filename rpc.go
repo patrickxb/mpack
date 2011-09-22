@@ -270,6 +270,10 @@ func (client *RPCClient) Call(procedure string, params interface{}, output chan 
         return nil
 }
 
+func (client *RPCClient) IsConnected() bool {
+        return client.Connected
+}
+
 func (client *RPCClient) Close() {
         client.Connected = false
         client.conn.Close()

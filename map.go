@@ -155,6 +155,13 @@ func (m Map) MapIndex(key interface{}) (*Map, bool) {
         if !present {
                 return nil, false
         }
+        v := reflect.ValueOf(index)
+        if v.IsValid() == false {
+                return nil, true
+        }
+        if v.IsNil() {
+                return nil, true
+        }
         return NewMap(index), true
 }
 
