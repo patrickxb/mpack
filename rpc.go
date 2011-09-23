@@ -88,6 +88,15 @@ func sendResults(results chan []byte, quit chan bool, conn net.Conn) {
 }
 
 func processRPC(rpc interface{}, results chan []byte) {
+        defer func() {
+                if err := recover(); err != nil {
+                        log.Println("processRPC failed", err)
+                        response, e := errorResponse(0, err.(os.Error).String())
+                        if e == nil {
+                                results <- response
+                        }
+                }
+        }()
         startTime := time.Nanoseconds()
         args := NewArray(rpc)
         if args.Item(0) != rpc_request {
