@@ -6,6 +6,7 @@ import (
         "log"
         "net"
         "os"
+        "runtime/debug"
         "sync"
         "time"
 )
@@ -91,9 +92,12 @@ func processRPC(rpc interface{}, results chan []byte) {
         defer func() {
                 if err := recover(); err != nil {
                         log.Println("processRPC failed", err)
+                        debug.PrintStack()
                         response, e := errorResponse(0, err.(os.Error).String())
                         if e == nil {
                                 results <- response
+                        } else {
+                                log.Printf("error making error response: %s", e)
                         }
                 }
         }()
@@ -341,6 +345,5 @@ func (cp *ClientPool) Put(client *RPCClient) {
                 return
         }
 
-        log.Printf("putting client back in pool")
         cp.clients.Push(client)
 }
