@@ -2,7 +2,6 @@ package mpack
 
 import (
 	"bytes"
-	"container/vector"
 	"io"
 	"log"
 	"net"
@@ -295,14 +294,13 @@ func (client *RPCClient) Close() {
 type ClientPool struct {
 	Host    string
 	MaxSize int
-	clients *vector.Vector
+	clients []*RPCClient
 	lock    *sync.Mutex
 }
 
 func NewClientPool(host string) *ClientPool {
 	result := new(ClientPool)
 	result.Host = host
-	result.clients = new(vector.Vector)
 	result.lock = new(sync.Mutex)
 	result.MaxSize = 10
 	return result
@@ -312,8 +310,10 @@ func (cp *ClientPool) Get() (*RPCClient, error) {
 	cp.lock.Lock()
 	defer cp.lock.Unlock()
 
-	for cp.clients.Len() > 0 {
-		result := cp.clients.Pop().(*RPCClient)
+	for len(cp.clients) > 0 {
+                n := len(cp.clients)
+		result := cp.clients[n-1]
+                cp.clients = cp.clients[:n-1]
 		if result.Connected {
 			return result, nil
 		}
@@ -339,11 +339,11 @@ func (cp *ClientPool) Put(client *RPCClient) {
 		return
 	}
 
-	if cp.clients.Len() >= cp.MaxSize {
+	if len(cp.clients) >= cp.MaxSize {
 		log.Printf("pool is full, discarding client")
 		client.Close()
 		return
 	}
 
-	cp.clients.Push(client)
+	cp.clients = append(cp.clients, client)
 }
